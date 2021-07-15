@@ -14,13 +14,15 @@ class PlansController extends AppController
     /**
      * Index method
      *
+     * @param string|null $currency
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index($currency = null)
     {
-        $plans = $this->Plans->find('all')
-            ->all();
+        $plans = $this->Plans->find('index', [
+            'currency' => $currency,
+        ])->all();
 
-        $this->set(compact('plans'));
+        $this->set(compact('plans', 'currency'));
     }
 }

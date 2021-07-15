@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property int $price
  * @property string $description
+ * @property float $rate
  */
 class Plan extends Entity
 {
@@ -29,4 +30,28 @@ class Plan extends Entity
         'price' => true,
         'description' => true,
     ];
+
+    /**
+     * Accessor for $this->rate
+     * @param float|null $value
+     * @return float
+     */
+    protected function _getRate($value)
+    {
+        if ($value === null) {
+            return 1.0;
+        }
+
+        return (float)$value;
+    }
+
+    /**
+     * Accessor for $this->final_price (price * rate)
+     *
+     * @return float|int
+     */
+    protected function _getFinalPrice()
+    {
+        return $this->price * $this->rate;
+    }
 }

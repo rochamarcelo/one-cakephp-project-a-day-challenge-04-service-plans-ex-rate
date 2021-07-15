@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Plan;
+use App\WebService\ExchangeRate;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -72,5 +75,29 @@ class PlansTable extends Table
             ->notEmptyString('description');
 
         return $validator;
+    }
+
+    /**
+     * @param Query $query
+     * @param $options
+     */
+    public function findIndex(Query $query, $options)
+    {
+        $currency = $options['currency'];
+        if ($currency === null) {
+            return $query;
+        }
+        $rate = (new ExchangeRate())->get()['rates'][$currency] ?? null;
+        if ($rate === null) {
+            throw new \InvalidArgumentException(__('Invalid currency'));
+        }
+
+        return $query->formatResults(function(ResultSet $resultSet) use ($rate) {
+            return $resultSet->map(function(Plan $plan) use ($rate) {
+                $plan->set('rate', $rate);
+
+                return $plan;
+            });
+        });
     }
 }

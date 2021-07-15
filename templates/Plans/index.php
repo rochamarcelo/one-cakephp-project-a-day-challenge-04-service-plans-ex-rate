@@ -9,8 +9,10 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title"><?= h($plan->name) ?></h4>
-                <h2 class="card-title pricing-card-title"><?= $this->Number->format($plan->price) ?> <small class="text-muted">/ mo</small></h2>
-                <p class="card-text"><?= $this->Number->format($plan->price) ?></p>
+                <h2 class="card-title pricing-card-title"><?= $this->Number->format(
+                    $plan->final_price,
+                    ['precision' => 2]
+                ) ?> <small class="text-muted"><?= h($currency)?> / mo</small></h2>
                 <ul class="list-unstyled mt-3 mb-4">
                     <?php foreach ((explode('|', $plan->description)) as $item):?>
                         <li><?= h($item)?></li>
