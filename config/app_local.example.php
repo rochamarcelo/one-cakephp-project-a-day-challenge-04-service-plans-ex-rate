@@ -91,4 +91,9 @@ return [
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
     ],
+    'ExchangeRateService' => [
+        'url' => 'http://api.exchangeratesapi.io/v1/',
+        'access_key' => env('EXCHANGE_RATE_SERVICE_ACCESS_KEY'),
+        'base' => 'USD'
+    ],
 ];
